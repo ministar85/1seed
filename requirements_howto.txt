@@ -1,0 +1,20 @@
+install req:
+pip install -r requirements.txt
+--
+pip3 install -r requirements.txt
+
+save current req:
+
+pip freeze > requirementswindows.txt
+
+pip3 freeze > requirements.txt
+
+pip freeze > requirementslinux.txt
+
+------------------
+----------------------
+for linux:
+pip3 install -r requirements.txt
+
+for win:
+pip3 install -r requirementswindows.txt

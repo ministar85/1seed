@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>One Seed</title>
+    <style>
+        .pagination-page-info {
+            padding: .6em;
+            padding-left: 0;
+            width: 40em;
+            margin: .5em;
+            margin-left: 0;
+            font-size: 12px;
+        }
+        .pagination-page-info b {
+            color: black;
+            background: #6aa6ed;
+            padding-left: 2px;
+            padding: .1em .25em;
+            font-size: 150%;
+        }
+        /*explanation for the following: https://stackoverflow.com/questions/50501691/laravel-v5-2-pagination-display
+        /* This removes the bullet points from all the list items, and some padding that is usually there by default. */
+        .pagination {
+            list-style: none;
+            padding-left: 0;
+            text-align: center;
+        }
+        /* make all the parts be on one line: */
+        .pagination li {
+            display: inline-block;
+        }
+        .pagination li+li {
+        ma  rgin-left: 1rem;
+        }
+        .pagination a {
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            color: black;
+            border: 1px solid black;
+            border-radius: 2px;
+        }
+
+        .proficiencydiv{
+            display: flex}
+
+        .proficiencydiv div{
+            margin: 10px}
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script>
+        function ShowHideMenu() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            } 
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type=text/javascript>
+        $(document).ready(function(){
+            $("select").change(function(){
+                $( "select option:selected").each(function(){
+                    if($(this).attr("value")=="red"){
+                        $(".box").hide();
+                        $(".red").show();
+                    }
+                    if($(this).attr("value")=="green"){
+                        $(".box").hide();
+                        $(".green").show();
+                    }
+                    if($(this).attr("value")=="blue"){
+                        $(".box").hide();
+                        $(".blue").show();
+                    }
+                    if($(this).attr("value")=="choose"){
+                        $(".box").hide();
+                        $(".choose").show();
+                    }
+                });
+            }).change();
+        });
+
+        function Zone() {
+        $('#zone-select').empty();
+        $('#zone-select').append("<option>Chargement</option>");
+        $.ajax({
+            type: "GET",
+            url: "https://istack.000webhostapp.com/json/t9.json",
+            // url: "/t9",
+            dataType: "json",
+            success: function(data) {
+                //console.log(data)
+                $('#zone-select').empty();
+                $('#zone-select').append("<option value='0'>-- Select zone --</option>");
+                $.each(data, function(i, item) {
+                    $('#zone-select').append('<option value=' + data[i].zone_pop + '>' + data[i].zone_nom + '</option>');
+                });
+
+                $("#zone-select").change(function() {
+                    var nom = $("#zone-select option:selected").text(); // name of selected option
+                    var index = zoneNom.indexOf(nom);
+                    var new_labels = [zoneNom[index]];
+                    var new_data1 = [zonePop[index]];
+                    var new_data2 = [zoneSalaries[index]];
+                    barGraph.data.labels = new_labels;
+                    barGraph.data.datasets[0].data = new_data1;
+                    barGraph.data.datasets[1].data = new_data2;
+                    barGraph.update(); // update chart
+                });
+
+                var zoneNom = [];
+                var zonePop = [];
+                var zoneSalaries = [];
+                for (var i in data) {
+                    zoneNom.push(data[i].zone_nom);
+                    zonePop.push(data[i].zone_pop);
+                    zoneSalaries.push(data[i].zone_salaries)
+                }
+                var chartdata = {
+                    labels: zoneNom,
+                    datasets: [{
+                    label: 'Population',
+                    backgroundColor: 'rgba(200, 200, 200, 0.75)',
+                    borderColor: 'rgba(200, 200, 200, 0.75)',
+                    hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+                    hoverBorderColor: 'rgba(200, 200, 200, 1)',
+                    data: zonePop
+                    }, {
+                    label: 'Salaries',
+                    backgroundColor: 'rgba(200, 200, 200, 0.75)',
+                    borderColor: 'rgba(200, 200, 200, 0.75)',
+                    hoverBackgroundColor: 'rgba(200, 200, 200, 1)',
+                    hoverBorderColor: 'rgba(200, 200, 200, 1)',
+                    data: zoneSalaries
+                    }]
+                };
+
+                var option = {
+                    scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                    }
+                };
+                var ctx = $("#mycanvas");
+                var barGraph = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartdata,
+                    options: option
+                });
+                var myBarChart;
+
+                $("#zone-select").val(zonePop[0]).trigger('change'); // select first option
+
+            },
+            complete: function() {}
+        });
+        }
+        $(document).ready(function() {
+        Zone();
+        });
+    </script>
+    <style>
+    .fill-in-jumbotron {
+        width: 50%;
+        /* background-color:honeydew; */
+        background-color: white;
+        margin: 0 auto
+    }
+    .background-grow{
+        background-image: url("https://i.pinimg.com/564x/a5/0b/20/a50b209fe6aa16df19e47d59320d0d72.jpg");
+        background-repeat: no-repeat;
+    }
+    .background-plant{
+        background-image: url("https://www.happyfamilyart.com/wp-content/uploads/2015/03/LittleTree2v2.jpg");
+        background-repeat: no-repeat;
+    }
+    .background-storage{
+        background-image: url("https://i.pinimg.com/474x/fa/70/bc/fa70bcdad7f24f5336fd9337ea065070.jpg");
+        background-repeat: no-repeat;
+    }
+    .background-user{
+        background-image: url("https://i.pinimg.com/474x/fa/70/bc/fa70bcdad7f24f5336fd9337ea065070.jpg");
+        background-repeat: no-repeat;
+    }
+    body {
+        position: absolute;
+        left: 0.5%;
+        right: 0.5%;
+        top: 7%; 
+    }
+    .hide {
+        display: none;
+    }
+
+    .box{
+        padding: 20px;
+        display: none;
+        margin-top: 20px;
+        border: 1px solid #000;
+    }
+    .progress {
+        background-color: rgb(255, 255, 255);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border: 0;
+        height: 20px;
+        border-radius: 20px;
+    }
+    .progress-bar {
+        box-shadow: none;
+        border-radius: 20px;
+    }
+
+    .red{ background: #ff0000; }
+    .green{ background: #00ff00; }
+    .blue{ background: #0000ff; }
+    .choose{background: #ffffff;}
+    </style>    
+    
+</head>
+<body>
+    {% include 'includes/_navbar.html' %}
+    <!-- <div padding-top: 50px; padding-left: 80px; classs="container"> -->
+    <!-- <div padding-top: 50px; padding-left: 80px;>  -->
+
+    <!--in order to center in the middle uncomment next line with class container-->
+    <!-- <div class="container"> -->
+    <div width: 50%; padding-left: 80px>
+        {% include 'includes/_messages.html' %}
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- add bootstrap: -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+     <!-- add ck editor: call class with editor with id = editor-->
+    <script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+    <script type="text/javascript">
+      CKEDITOR.replace('editor')
+    </script>
+</body>
+</html>

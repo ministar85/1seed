@@ -1,0 +1,126 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="background-plant">
+    <div class="fill-in-jumbotron ">
+      <h1>Add Plant Item</h1>
+      {% from "includes/_formhelpers.html" import render_field %}
+      <form method="POST" action="">
+        <div class="form-group">
+          * {{ render_field(form.name, class_="form-control") }}
+        </div>
+        <br>
+        <div>
+          botanical data:
+        </div><br>
+        <div class="form-group">
+          * {{ render_field(form.latin_name, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.family, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.sub_family, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.tribe, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.sub_tribe, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.genus, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.perenial, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.endangered, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.link, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.Description, class_="form-control") }}
+        </div>
+        <br>
+        <div>
+          calculated based on location:
+        </div>
+        <br>
+        <div class="form-group">
+          {{ render_field(form.native, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.flowering_beggining, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.flowering_time, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.fruiting_beggining, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.fruiting_time, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.transplant_time, class_="form-control") }}
+        </div>
+        <br>
+        <div>
+          growing data
+        </div>
+        <br>
+        <div class="form-group">
+          {{ render_field(form.SeedTempOpt, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.SeedTempMin, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.SeedTempMax, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.PlantTempOpt, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.PlantTempMin, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.PlantTempMax, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.Area_needed, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.Spacing, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.WaterDemands, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.LightDemands, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.HumidityDemands, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.Hardness, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.GrowthDetails, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.Pests, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.SeedStartDate, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.PlantStartDate, class_="form-control") }}
+        </div>
+        <p><input class="btn btn-light" type="submit" value="Submit">
+      </form>
+    </div>
+  </div>    
+{% endblock %}

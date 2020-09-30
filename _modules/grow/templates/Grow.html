@@ -1,0 +1,152 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+
+<!-- make this work with included file -->
+<script type="text/javascript" src="../../../_scripts/datatables.js"></script>
+
+<script type="text/javascript"> 
+    $(document).ready( function () {
+               $('#table_id').DataTable( {
+                   colReorder: true,
+                   rowReorder: { update: true },
+                   // bProcessing: true,
+   
+                   // bjQueryUI: true,
+   
+                   //autoFill: true,
+   
+                   // responsive: true,
+                   
+                   //grouping of the rows:
+                   //rowGroup: {
+                   //    dataSrc: '2'
+                   //},
+   
+   
+                   buttons: [
+                       'copy', 'excel', 'pdf'
+                   ]
+               } );
+           } );
+   </script>
+    
+    <div class="modal fade" id="confirm-delete-page" tabindex="-1" role="dialog" aria-labelledby="Delete Grow Page" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure you want to delete grow page {{selected_grow_page_name}}?</h5>
+                </div>
+                <div class="modal-body">
+                    If you delete grow page, all grow items for that page/location will be lost.
+                </div>
+                <div class="modal-footer">
+                    <form action="{{url_for('grow.delete_Grow_Page', id=selected_grow_page_id)}}" method="post" style ="display:inline">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit"  value="Delete" class="btn btn-outline-danger" data-toggle="modal" data-target="#confirm-delete">
+                    </form>
+                    <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <h1>Grow  {% if selected_grow_page_name %} page selected : {{selected_grow_page_name}} {% endif %}
+    </h1>
+     <p>
+        <tr > {% if selected_grow_page_name %} Change {% else %} Select {% endif %} grow page : </tr>
+        {% for growpages in growpages %}
+        <tr><a class ="btn btn-outline-info" href="/grow/{{growpages.id}}">{{growpages.name}}</a></tr>
+        {% endfor %}
+     </p>
+        <a class ="btn btn-info" href="/grow/add_Grow_page">Add Grow page</a>
+        {% if selected_grow_page_name %}
+            <a class ="btn btn-outline-info" href="edit_Grow_Page/{{selected_grow_page_id}}">Edit : {{selected_grow_page_name}}</a>
+            <button  class="btn btn-outline-danger" data-toggle="modal" data-target="#confirm-delete-page">
+                Delete : {{selected_grow_page_name}}
+            </button>
+            <p>
+                <td>
+                <th>Remaining space :{{remaining_space}}</th>
+                <th>Perenial percentage :{{perenial_percentage}}</th>
+            </td>
+            </p>
+            <a class ="btn btn-outline-info" href="/grow/Timetable/{{selected_grow_page_id}}">Timetable View</a>
+        {% endif %}
+        <hr>
+        </th>
+     
+    <p>
+        <a class ="btn btn-info" href="/grow/add_Grow_item/{{selected_grow_page_id}}">Add Grow Item</a>
+        <!-- <table  class="table table-striped"> -->
+        <!-- number of rows in thead and tbody for datatables have to me the same thus empty <th> -->
+        <table  id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>title</th>
+                    <th>plant name</th>
+                    <th>surface needed</th>
+                    <th>quantity</th>
+                    <th>alert</th>
+                    <th>time planted indoor</th>
+                    <th>time planted outdoor</th>
+                    <th>perenial</th>
+                    <th>grow time</th>
+                    <th>grow group</th>
+                    <th>grow group type</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for growitems in growitems %}
+                    <tr>  
+                        <td>{{growitems.title}}</td>
+                        <!-- <td><a href="growitem/{{growitems.id}}">{{growitems.title}}</a></td> -->
+                        <!-- <td>{{growitems.plant_name}}</td> -->
+                        <td><a href="/plants/plantitem/{{growitems.plant_id}}/" class="btn btn-default pull-right">{{growitems.plant_name}}</a></td>
+                        <td>{{growitems.growitem_surface}}</td>
+                        <td>{{growitems.growitem_quantity | safe}}</td>
+                        <td>{{growitems.event_alert | safe}}</td>
+                        <td>{{growitems.time_planted_greenhouse}}</td>
+                        <td>{{growitems.time_planted_outdoor}}</td>
+                        <td>{{growitems.perenial}}</td>
+                        <td>{{growitems.grow_time}}</td>
+                        <td>{{growitems.grow_group_name}}</td>
+                        <td>{{growitems.grow_group_type}}</td>
+                        <td><a href="edit_Grow_item/{{growitems.id}}" class="btn btn-default pull-right">Edit</a></td>
+                        <td>
+                            <div class="modal fade" id="confirm-delete-item" tabindex="-1" role="dialog" aria-labelledby="Delete Grow item" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Are you sure you want to delete grow item : {{growitems.title}}?</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            This action cannot be undone.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{{url_for('grow.delete_Grow_item', id=growitems.id)}}" method="post">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="submit" value="Delete" class="btn btn-outline-danger">
+                                            </form>
+                                            <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button  class="btn btn-outline-danger" data-toggle="modal" data-target="#confirm-delete-item">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </p>
+{% endblock %}

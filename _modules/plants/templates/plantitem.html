@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>{{plantitem.title}}</h1>
+<small>Written by {{plantitem.author}} on {{plantitem.create_date}}</small>
+<hr>
+<div>
+    plant: {{plantitem.plant_name | safe}} <br>
+    Latin name: {{plantitem.latin_name | safe}} <br>
+    Family name: {{plantitem.family | safe}} <br>
+    ExternalLinks name: {{plantitem.ExternalLinks | safe}} <br>
+    Growth Details: {{plantitem.GrowthDetails | safe}} <br>
+    Seed Temperature Optimal: {{plantitem.SeedTempOpt | safe}} <br>
+    Seed Temperature Minimal: {{plantitem.SeedTempMin | safe}} <br>
+    Plant Temperature Optimal: {{plantitem.PlantTempOpt | safe}} <br>
+    Plant Temperature Optimal: {{plantitem.PlantTempMin | safe}} <br>
+    Companion Plants: {{plantitem.CompanionPlants | safe}} <br>
+    Area needed: {{plantitem.Area_needed | safe}} <br>
+    Description: {{plantitem.Description | safe}} <br>
+    Fruit Time Optimal: {{plantitem.FruitTimeOptimal | safe}} <br>
+    Pests: {{plantitem.Pests | safe}} <br>
+    Water Demands: {{plantitem.WaterDemands | safe}} <br>
+    Seed Start Date: {{plantitem.SeedStartDate | safe}} <br>
+    Plant Start Date: {{plantitem.PlantStartDate | safe}} <br>
+</div>
+{% endblock %}

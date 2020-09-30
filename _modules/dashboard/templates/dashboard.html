@@ -1,0 +1,245 @@
+{% extends 'layout.html' %}
+{% block body %}
+<h1>Greenhouse 2081 <small>Welcome {{session.username}}</small></h1>
+
+<!-- <div style="overflow-x:auto;"></div> -->
+
+<table>
+  <hr>
+  <tr>
+    <td>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script type=text/javascript> $(function() { $('a#process_input').bind('click', function() {
+        $.getJSON('/dashboard/default', { graphtype: $('select[name="graphtype" ]').val(), }, function(data) {
+        $("#result").text(data.result); // $("#title").text(data.title); // $("#max").text(data.max); //
+        $("#labels").text(data.labels); // $("#values").text(data.values); success:
+        function(){ //window.location.href="text(data.result)"
+        ; //window.location.href=text(data.result); //window.location.href="demijan" ; } }); return false; }); });
+        </script> <form>
+          <select name=graphtype align="center"> 
+            <option value="live">live</option>
+            <option value="last day">last day</option>
+            <option value="last week">last week</option>
+            <option value="last year">last year</option>
+            <!-- <option value="custom">custom</option> -->
+          </select>
+          <a href=# id=process_input><button class='btn btn-default'>Submit</button></a>
+        </form>
+        <div>Selected period {{dropdown}}</div>
+        <div>-----------------------------------------------</div>
+        <div>Max indoor temperature for selected period ({{dropdown}}) : {{tempmaxindoor}}</div>
+        <div>Min indoor temperature for selected period ({{dropdown}}) : {{tempminindoor}}</div>
+        <div>-----------------------------------------------</div>
+        <!-- Currently not using outdoor temperature (for 1.0)-->
+        <!-- <div>-----------------------------------------------</div> -->
+        <!-- <div>Current graph showing values for {{dropdown}}</div> -->
+        <!-- <div>Max outdoor temperature for selected period ({{dropdown}}) : {{tempmaxoutdoor}}</div> -->
+        <!-- <div>Min outdoor temperature for selected period ({{dropdown}}) : {{tempminoutdoor}}</div> -->
+
+    <!-- <th scope="Temperature data"> -->
+      <center>
+        <div>{{ title }}</div>
+
+        <canvas id="chart" width="800" height="250"></canvas>
+        <script>
+          // bar chart data
+          var barData = {
+            labels: [
+              {% for item in labels %}
+          "{{ item }}",
+            {% endfor %}
+                    ],
+          datasets: [{
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            bezierCurve: false,
+            data: [
+              {% for item in values %}
+                  {{ item }},
+          {% endfor %}]
+                      }
+                  ]
+                  }
+          Chart.defaults.global.animationSteps = 50;
+          Chart.defaults.global.tooltipYPadding = 16;
+          Chart.defaults.global.tooltipCornerRadius = 0;
+          Chart.defaults.global.tooltipTitleFontStyle = "normal";
+          Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+          Chart.defaults.global.animationEasing = "easeOutBounce";
+          Chart.defaults.global.responsive = false;
+          Chart.defaults.global.scaleLineColor = "black";
+          Chart.defaults.global.scaleFontSize = 16;
+          // get bar chart canvas
+          var mychart = document.getElementById("chart").getContext("2d");
+          steps = 12
+          max = {{ max }}
+          // draw bar chart
+          var LineChartDemo = new Chart(mychart).Line(barData, {
+            scaleOverride: true,
+            scaleSteps: steps,
+            scaleStepWidth: Math.ceil(max / steps),
+            scaleStartValue: 0,
+            scaleShowVerticalLines: true,
+            scaleShowGridLines: true,
+            barShowStroke: true,
+            scaleShowLabels: true,
+            bezierCurve: false,
+          });
+        </script>
+      </center>
+    </td>
+    <!-- Set your location:-->
+    <!-- https://www.windy.com/-Embed-widget-on-page/widgets?44.654,20.200,5 -->
+    <th scope="col"><iframe width="650" height="450" src="https://embed.windy.com/embed2.html?lat=45.092&lon=20.126&zoom=11&level=surface&overlay=wind&menu=&message=&marker=true&calendar=&pressure=true&type=map&location=coordinates&detail=true&detailLat=45.136&detailLon=20.129&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1" frameborder="0"></iframe></th>
+    <th scope="col">Dashboard 2</th>
+</table>
+
+<table>
+  <!-- <th scope="Temperature data - outdoor"> -->
+  <td>
+    <center>
+      <div>{{ title1 }}</div>
+
+      <canvas id="chart11" width="800" height="250"></canvas>
+      <script>
+        // bar chart data
+        var barData = {
+          labels: [
+            {% for item1 in labels1 %}
+        "{{ item1 }}",
+          {% endfor %}
+                    ],
+        datasets: [{
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          bezierCurve: false,
+          data: [
+            {% for item1 in values1 %}
+                          {{ item1 }},
+        {% endfor %}]
+                      }
+                  ]
+                  }
+        Chart.defaults.global.animationSteps = 50;
+        Chart.defaults.global.tooltipYPadding = 16;
+        Chart.defaults.global.tooltipCornerRadius = 0;
+        Chart.defaults.global.tooltipTitleFontStyle = "normal";
+        Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+        Chart.defaults.global.animationEasing = "easeOutBounce";
+        Chart.defaults.global.responsive = false;
+        Chart.defaults.global.scaleLineColor = "black";
+        Chart.defaults.global.scaleFontSize = 16;
+        // get bar chart canvas
+        var mychart = document.getElementById("chart11").getContext("2d");
+        steps = 12
+        max = {{ max }}
+        // draw bar chart
+        var LineChartDemo = new Chart(mychart).Line(barData, {
+          scaleOverride: true,
+          scaleSteps: steps,
+          scaleStepWidth: Math.ceil(max / steps),
+          scaleStartValue: 0,
+          scaleShowVerticalLines: true,
+          scaleShowGridLines: true,
+          barShowStroke: true,
+          scaleShowLabels: true,
+          bezierCurve: false,
+        });
+      </script>
+    </center>
+  </td>
+
+
+  <th scope="col">Reservoir level = 83%
+    <!-- <canvas id="chart12" width="600" height="400"></canvas>
+      <script>
+        // bar chart data
+        var barData = {
+          labels: [
+            {% for item in labels %}
+        "{{ item }}",
+          {% endfor %}
+	],
+        datasets: [{
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          data: [
+            {% for item in values %}
+               "{{ item }}",
+        {% endfor %}
+        ]
+          }
+        ]
+      }
+        // get bar chart canvas
+        var mychart = document.getElementById("chart12").getContext("2d");
+        steps = 12
+        max = {{ max }}
+        // draw bar chart
+        new Chart(mychart).Bar(barData, {
+          scaleOverride: true,
+          scaleSteps: steps,
+          scaleStepWidth: Math.ceil(max / steps),
+          scaleStartValue: 0,
+          scaleShowVerticalLines: true,
+          scaleShowGridLines: true,
+          barShowStroke: true,
+          scaleShowLabels: true
+        }
+        );
+      </script> -->
+
+  </th>
+  <th scope="col"></th>
+  <th scope="col">Power consumption = 25kW</th>
+
+  </tr>
+</table>
+
+<table>
+  <hr>
+  <tr>
+    <td>
+      <div class='container'>
+        Greenhouse stream
+      </div>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <hr>
+  <tr>
+    <td>Currently growing in greenhouse : </td>
+    <td>Started</td>
+    <td>Expected due date</td>
+    <td>Quantity</td>
+    <td>Finished</td>
+  </tr>
+  <tr>
+    <td>Paradajz</td>
+    <td>12.02.2019.</td>
+    <td>31.05.2019</td>
+    <td>10</td>
+    <td>10%</td>
+  </tr>
+  <tr>
+    <td>Krastavac</td>
+    <td>12.02.2019.</td>
+    <td>31.05.2019</td>
+    <td>5</td>
+    <td>20%</td>
+  </tr>
+</table>
+</div>
+
+{% endblock %}

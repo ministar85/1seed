@@ -1,0 +1,18 @@
+docker build image:
+docker build -t 1seed:latest .
+
+docker check images:
+docker images
+
+docker run:
+docker run -d -p 5000:5000 --restart always 1seed
+
+docker check container:
+docker ps 
+
+docker run as volume (auto add changes to container)
+docker run -d -p 5000:5000 -v "$PWD":/app 1seed
+$pwd = path to folder
+
+for win:
+docker run -d -p 5000:5000 -v ${pwd}:/app 1seed

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="background-grow">
+    <div class="fill-in-jumbotron ">
+      <h1>Edit Grow Item</h1>
+      {% from "includes/_formhelpers.html" import render_field %}
+      <form method="POST" action="">
+        <div class="form-group">
+          {{ render_field(form.title, class_="form-control") }}
+        </div>
+        <div>
+          Plant name:
+        </div>
+        <div class="form-group">
+          {{ form.plant_name(readonly=true, class_="form-control")}}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.growitem_surface, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.growitem_quantity, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.event_alert, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.time_planted_greenhouse, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.time_planted_outdoor, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.perenial, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.grow_time, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.grow_group_name, class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.grow_group_type, class_="form-control") }}
+        </div>
+        <p><input class="btn btn-light" type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+{% endblock %}

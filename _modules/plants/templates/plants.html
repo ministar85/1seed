@@ -1,0 +1,163 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Plants menu</h1>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.css"/>
+ 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+
+    
+    <script type="text/javascript"> 
+        $(document).ready( function () {
+            $('#table_id').DataTable( {
+                colReorder: true,
+                rowReorder: { update: true },
+                // bProcessing: true,
+
+                // bjQueryUI: true,
+
+                //autoFill: true,
+
+                // responsive: true,
+                
+                //grouping of the rows:
+                //rowGroup: {
+                //    dataSrc: '2'
+                //},
+
+
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ]
+            } );
+        } );
+    </script>
+
+
+    <a class ="btn btn-light" onclick="showhidetable('.botanical_data')">show/hide botanical data</a>
+    <a class ="btn btn-light" onclick="showhidetable('.calculated_based_on_location')">show/hide calculated_based_on_location data</a>
+    <a class ="btn btn-light" onclick="showhidetable('.growing_data')">show/hide "growing_data</a>
+
+    <script>
+        function showhidetable(element_class) {
+            $(element_class).toggle();
+        }
+    </script>
+
+    <hr>
+    <!-- number of rows in thead and tbody for datatables have to me the same thus empty <th> -->
+        <table  id="table_id" class="display">
+            <thead>
+                <tr>
+                    <a class ="btn btn-info" href="/plants/add_Plant_item">Add Plant Item</a>
+                </tr>
+                <hr>
+                <tr>
+                    <th>name</th>
+                    <th class="botanical_data">latin_name</th>
+                    <th class="botanical_data">family</th>
+                    <th class="botanical_data">sub_family</th>
+                    <th class="botanical_data">tribe</th>
+                    <th class="botanical_data">sub_tribe</th>
+                    <th class="botanical_data">genus</th>
+                    <th class="botanical_data">perennial</th>
+                    <th class="botanical_data">endangered</th>
+                    <th class="botanical_data">link</th>
+                    <th class="botanical_data">Description</th>
+                    <th class="calculated_based_on_location" style="display: none;">native</th>
+                    <th class="calculated_based_on_location" style="display: none;">flowering_beggining</th>
+                    <th class="calculated_based_on_location" style="display: none;">flowering_time</th>
+                    <th class="calculated_based_on_location" style="display: none;">fruiting_beggining</th>
+                    <th class="calculated_based_on_location" style="display: none;">fruiting_time</th>
+                    <th class="calculated_based_on_location" style="display: none;">transplant_time</th>
+                    <th class="growing_data" style="display: none;">SeedTempOpt</th>
+                    <th class="growing_data" style="display: none;">SeedTempMin</th>
+                    <th class="growing_data" style="display: none;">SeedTempMax</th>
+                    <th class="growing_data" style="display: none;">PlantTempOpt</th>
+                    <th class="growing_data" style="display: none;">PlantTempMin</th>
+                    <th class="growing_data" style="display: none;">PlantTempMax</th>
+                    <th class="growing_data" style="display: none;">Area_needed</th>
+                    <th class="growing_data" style="display: none;">Spacing</th>
+                    <th class="growing_data" style="display: none;">WaterDemands</th>
+                    <th class="growing_data" style="display: none;">LightDemands</th>
+                    <th class="growing_data" style="display: none;">HumidityDemands</th>
+                    <th class="growing_data" style="display: none;">Hardness</th>
+                    <th class="growing_data" style="display: none;">GrowthDetails</th>
+                    <th class="growing_data" style="display: none;">Pests</th>
+                    <th class="growing_data" style="display: none;">SeedStartDate</th>
+                    <th class="growing_data" style="display: none;">PlantStartDate</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plantitems in plantitems %}
+                    <tr>  
+                        <td><a href="plantitem/{{plantitems.id}}">{{plantitems.name}}</a></td>
+                        <td class="botanical_data">{{plantitems.latin_name | safe}}</td>
+                        <td class="botanical_data">{{plantitems.family | safe}}</td>
+                        <td class="botanical_data">{{plantitems.sub_family | safe}}</td>
+                        <td class="botanical_data">{{plantitems.tribe | safe}}</td>
+                        <td class="botanical_data">{{plantitems.sub_tribe}}</td>
+                        <td class="botanical_data">{{plantitems.genus}}</td>
+                        <td class="botanical_data">{{plantitems.perenial}}</td>
+                        <td class="botanical_data">{{plantitems.endangered}}</td>
+                        <td class="botanical_data">{{plantitems.link}}</td>
+                        <td class="botanical_data">{{plantitems.Description}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.native}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.flowering_beggining}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.flowering_time}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.fruiting_beggining}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.fruiting_time}}</td>
+                        <td class="calculated_based_on_location" style="display: none;">{{plantitems.transplant_time}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.SeedTempOpt}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.SeedTempMin}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.SeedTempMax}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.PlantTempOpt}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.PlantTempMin}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.PlantTempMax}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.Area_needed}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.Spacing}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.WaterDemands}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.LightDemands}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.HumidityDemands}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.Hardness}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.GrowthDetails}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.Pests}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.SeedStartDate}}</td>
+                        <td class="growing_data" style="display: none;">{{plantitems.PlantStartDate}}</td>
+                        <td><a href="edit_plant_item/{{plantitems.id}}" class="btn btn-default pull-right">Edit</a></td> 
+                        <td>
+                            <div class="modal fade" id="confirm-delete-plant" tabindex="-1" role="dialog" aria-labelledby="Delete Grow Page" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Are you sure you want to delete plant : {{plantitems.name}}?</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            This action cannot be undone.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{{url_for('plants.delete_plant_item', id=plantitems.id)}}" method="post">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="submit" value="Delete" class="btn btn-outline-danger">
+                                            </form>
+                                            <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <button  class="btn btn-outline-danger" data-toggle="modal" data-target="#confirm-delete-plant">
+                                Delete
+                            </button>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+{% endblock %}

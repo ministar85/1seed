@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>{{growitem.title}}</h1>
+<small>Written by {{growitem.author}} on {{growitem.create_date}}</small>
+<hr>
+<div>
+    title: {{growitem.title | safe}} <br>
+    variety: {{growitem.variety | safe}} <br>
+</div>
+{% endblock %}
